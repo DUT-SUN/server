@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kemi.actable.mapper.InvoiceMapper">
+    <resultMap id="invoiceResultMap" type="com.kemi.actable.entity.Invoices">
+        <id property="id" column="id"/>
+        <result property="invoiceNumber" column="invoice_number"/>
+        <!-- 其他字段 -->
+        <collection property="invoiceDetails" ofType="com.kemi.actable.entity.InvoiceDetail" column="id" select="selectInvoiceDetailsByInvoiceId" typeHandler="com.kemi.actable.typehandler.InvoiceDetailsTypeHandler"/>
+    </resultMap>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO Invoices (invoiceNumber, invoiceCode, invoiceType, invoiceDate, checkCode, machineCode, drawer, reviewer, recipient, passwordArea, sellerName, sellerTaxNumber, sellerBankAccountInfo, sellerContactInfo, purchaserName, purchaserTaxNumber, totalAmountInWords, totalAmount, invoiceAmountPreTax, invoiceTax)
+        VALUES (#{invoiceNumber}, #{invoiceCode}, #{invoiceType}, #{invoiceDate}, #{checkCode}, #{machineCode}, #{drawer}, #{reviewer}, #{recipient}, #{passwordArea}, #{sellerName}, #{sellerTaxNumber}, #{sellerBankAccountInfo}, #{sellerContactInfo}, #{purchaserName}, #{purchaserTaxNumber}, #{totalAmountInWords}, #{totalAmount}, #{invoiceAmountPreTax}, #{invoiceTax})
+    </insert>
+
+<!--    <insert id="insertInvoiceDetail">-->
+<!--        INSERT INTO InvoiceDetails (Invoice_ID, itemName, quantity, unitPrice, specification, unit, amount, taxRate, tax)-->
+<!--        VALUES (#{Invoice_ID}, #{itemName}, #{quantity}, #{unitPrice}, #{specification}, #{unit}, #{amount}, #{taxRate}, #{tax})-->
+<!--    </insert>-->
+</mapper>

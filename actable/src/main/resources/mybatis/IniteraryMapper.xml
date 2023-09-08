@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kemi.actable.mapper.IniteraryMapper">
+    <resultMap id="initeraryResultMap" type="com.kemi.actable.entity.Initerary">
+        <id property="id" column="id"/>
+        <result property="serviceProvider" column="service_provider"/>
+        <!-- 其他字段 -->
+        <collection property="rideRecords" ofType="com.kemi.actable.entity.IniteraryRecord" column="id" select="selectIniteraryRecordsByIniteraryId" typeHandler="com.kemi.actable.typehandler.IniteraryRecordsTypeHandler"/>
+    </resultMap>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO Initerary (serviceProvider, applicationDate, startTime, endTime, phoneNumber, totalAmount)
+        VALUES (#{serviceProvider}, #{applicationDate}, #{startTime}, #{endTime}, #{phoneNumber}, #{totalAmount})
+    </insert>
+
+<!--    <insert id="insertIniteraryRecord">-->
+<!--        INSERT INTO IniteraryRecord (Initerary_ID, Number, amount, carType, city, endPlace, mileage, pickUpTime, remarks, startPlace)-->
+<!--        VALUES (#{Initerary_ID}, #{Number}, #{amount}, #{carType}, #{city}, #{endPlace}, #{mileage}, #{pickUpTime}, #{remarks}, #{startPlace})-->
+<!--    </insert>-->
+</mapper>
