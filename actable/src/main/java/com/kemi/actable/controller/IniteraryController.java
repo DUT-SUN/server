@@ -122,7 +122,7 @@ public class IniteraryController {
         // 工程代码泄露可能会导致 AccessKey 泄露，并威胁账号下所有资源的安全性。以下代码示例仅供参考，建议使用更安全的 STS 方式，更多鉴权访问方式请参见：https://help.aliyun.com/document_detail/378657.html
         com.aliyun.ocr_api20210707.Client client = IniteraryController.createClient(System.getenv("ALIBABA_CLOUD_ACCESS_KEY_ID"), System.getenv("ALIBABA_CLOUD_ACCESS_KEY_SECRET"));
         com.aliyun.ocr_api20210707.models.RecognizeRideHailingItineraryRequest recognizeRideHailingItineraryRequest = new com.aliyun.ocr_api20210707.models.RecognizeRideHailingItineraryRequest()
-                .setUrl("https://0ac8-210-30-104-106.ngrok-free.app/image/" + fileName);
+                .setUrl(" https://f651-2001-da8-a800-afc0-3996-6168-2f18-1b96.ngrok-free.app/image/" + fileName);
         com.aliyun.teautil.models.RuntimeOptions runtime = new com.aliyun.teautil.models.RuntimeOptions();
         com.aliyun.ocr_api20210707.models.RecognizeRideHailingItineraryResponse resp = client.recognizeRideHailingItineraryWithOptions(recognizeRideHailingItineraryRequest, runtime);
         System.out.println(fileName);

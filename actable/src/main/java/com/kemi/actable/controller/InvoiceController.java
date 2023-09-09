@@ -94,6 +94,53 @@ public class InvoiceController {
 
     }
 
+    public JSONObject processInvoiceData(JSONObject invoiceData) {
+        JSONObject result = new JSONObject();
+        result.put("invoiceNumber", invoiceData.getString("invoiceNumber"));
+        result.put("invoiceCode", invoiceData.getString("invoiceCode"));
+        result.put("invoiceType", invoiceData.getString("invoiceType"));
+        result.put("invoiceDate", invoiceData.getString("invoiceDate"));
+        result.put("checkCode", invoiceData.getString("checkCode"));
+        result.put("machineCode", invoiceData.getString("machineCode"));
+        result.put("drawer", invoiceData.getString("drawer"));
+        result.put("reviewer", invoiceData.getString("reviewer"));
+        result.put("recipient", invoiceData.getString("recipient"));
+        result.put("passwordArea", invoiceData.getString("passwordArea"));
+        result.put("sellerName", invoiceData.getString("sellerName"));
+        result.put("sellerTaxNumber", invoiceData.getString("sellerTaxNumber"));
+        result.put("sellerBankAccountInfo", invoiceData.getString("sellerBankAccountInfo"));
+        result.put("sellerContactInfo", invoiceData.getString("sellerContactInfo"));
+        result.put("purchaserName", invoiceData.getString("purchaserName"));
+        result.put("purchaserTaxNumber", invoiceData.getString("purchaserTaxNumber"));
+        result.put("totalAmountInWords", invoiceData.getString("totalAmountInWords"));
+        result.put("totalAmount", invoiceData.getDouble("totalAmount"));
+        result.put("invoiceAmountPreTax", invoiceData.getDouble("invoiceAmountPreTax"));
+        result.put("invoiceTax", invoiceData.getDouble("invoiceTax"));
+
+        JSONArray details = invoiceData.getJSONArray("invoiceDetails");
+        JSONArray detailsResult = new JSONArray();
+        for (int i = 0; i < details.length(); i++) {
+            JSONObject detail = details.getJSONObject(i);
+            JSONObject detailResult = new JSONObject();
+            detailResult.put("itemName", detail.getString("itemName"));
+            detailResult.put("amount", detail.getDouble("amount"));
+            detailResult.put("quantity", detail.getInt("quantity"));
+            detailResult.put("unitPrice", detail.getDouble("unitPrice"));
+            detailResult.put("specification", detail.getString("specification"));
+            detailResult.put("unit", detail.getString("unit"));
+            detailResult.put("amount", detail.getDouble("amount"));
+            detailResult.put("taxRate", detail.getString("taxRate"));
+            detailResult.put("tax", detail.getString("tax"));
+
+            detailsResult.put(detailResult);
+        }
+
+        result.put("invoiceDetails", detailsResult);
+
+        return result;
+    }
+
+
     /**
      * 使用AK&SK初始化账号Client
      *
@@ -121,7 +168,6 @@ public class InvoiceController {
             if (!imageFolder.exists()) {
                 imageFolder.mkdir();
             }
-
             // Save the uploaded file to the local image folder on your machine
             String fileName = file.getOriginalFilename();
             File dest = new File(imageFolder, fileName);
@@ -129,7 +175,7 @@ public class InvoiceController {
 
             Client client = createClient(System.getenv("ALIBABA_CLOUD_ACCESS_KEY_ID"), System.getenv("ALIBABA_CLOUD_ACCESS_KEY_SECRET"));
             RecognizeInvoiceRequest recognizeInvoiceRequest = new RecognizeInvoiceRequest()
-                    .setUrl("https://0ac8-210-30-104-106.ngrok-free.app/image/" + fileName);
+                    .setUrl("https://f651-2001-da8-a800-afc0-3996-6168-2f18-1b96.ngrok-free.app/image/" + fileName);
             System.out.println(fileName);
             // 复制代码运行请自行打印 API 的返回值
             com.aliyun.ocr_api20210707.models.RecognizeInvoiceResponse response = client.recognizeInvoiceWithOptions(recognizeInvoiceRequest, new com.aliyun.teautil.models.RuntimeOptions());
@@ -176,7 +222,7 @@ public class InvoiceController {
 //                System.out.println(detail.getString("itemName") + ": " + detail.getString("amount") + "元");
             }
             insertInvoices(invoiceData);
-            return com.aliyun.teautil.Common.toJSONString(response);
+            return processInvoiceData(invoiceData).toString();
         } catch (TeaException error) {
             // 如有需要，请打印 error
             return error.message;

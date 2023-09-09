@@ -36,6 +36,7 @@ public class AppConfig implements WebMvcConfigurer {
                .excludePathPatterns("/art/fetlistbypage")
                .excludePathPatterns("/invoice/**")
                .excludePathPatterns("/initerary/**")
+               .excludePathPatterns("/payment/**")
               ;
 
 
